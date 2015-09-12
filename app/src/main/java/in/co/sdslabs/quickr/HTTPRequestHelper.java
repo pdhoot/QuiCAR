@@ -7,7 +7,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +20,7 @@ import java.util.Map;
  */
 public class HTTPRequestHelper extends Activity{
     private static String result = "" ;
+    private static JSONArray jsonResult ;
     private static Map<String, String> mparams ;
 
     public static String sendGETRequest(String url, Map<String, String> params ) {
@@ -81,7 +85,7 @@ public class HTTPRequestHelper extends Activity{
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                result = "Fuck off!" ;
+                result = "error" ;
             }
         }) {
             @Override
@@ -93,6 +97,35 @@ public class HTTPRequestHelper extends Activity{
         requestQueue.add(request);
 
         return result;
+
+    }
+
+
+    public static JSONArray getJSONResponse(String url, Map<String, String> params ) {
+
+        mparams = params ;
+
+        url = BuildUrl(url, params);
+
+        RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
+
+        JsonArrayRequest request = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        jsonResult = response ;
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                jsonResult = null;
+            }
+
+        });
+
+        requestQueue.add(request);
+
+        return jsonResult ;
 
     }
 
