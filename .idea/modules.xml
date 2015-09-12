@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/Quickr+.iml" filepath="$PROJECT_DIR$/Quickr+.iml" />
+=======
+>>>>>>> 1efd012ae8f5584ec5d8b8b4dd060483f9cc1fd0
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quiCar.iml" filepath="$PROJECT_DIR$/quiCar.iml" />
     </modules>
   </component>
 </project>
