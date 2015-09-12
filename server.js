@@ -12,14 +12,18 @@ var app = express();
 app.use(body_parser.urlencoded({ extended: true }));
 app.use(body_parser.json());
 
+//-----------------------------------------------------------------------------
 // Set up our router
+//-----------------------------------------------------------------------------
 var router = express.Router();
 
 router.get('/getAds', function(req, res) {
-  var query_string = req.query.query_string || null;
-  var json_response = ads.get_ads(query_string);
+  var brand_name = req.query.brand_name || null;
+  var model = req.query.model || null;
+  var json_response = ads.get_ads(brand_name, model);
   res.json(json_response);
 });
+//-----------------------------------------------------------------------------
 
 // Register our router
 app.use('/', router);
