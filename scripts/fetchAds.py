@@ -7,7 +7,7 @@ import requests
 from ConfigParser import ConfigParser
 config = ConfigParser()
 
-config.read('../config/config.cfg')
+config.read('./config/config.cfg')
 appid = config.get('app' , 'appId')
 tokenid = config.get('app' , 'tokenId')
 signature = config.get('app' , 'signature')
@@ -23,9 +23,9 @@ while condition:
 	url = 'http://api.quikr.com/public/adsByCategory?categoryId=71&from='+`j`+'&size=100'
 
 	r = requests.post(url , headers=headers)
-	result = json.loads(r.text)
+	result = json.loads(r.text.lower())
 
-	for i in result['AdsByCategoryResponse']['AdsByCategoryData']['docs']:
+	for i in result['adsbycategoryresponse']['adsbycategorydata']['docs']:
 		if i['id'] not in ads:
 			array.append(i)
 			ads.append(i['id'])
@@ -38,5 +38,5 @@ while condition:
 
 	j+=100
 
-f = open('../config/ads.json' , 'w')
+f = open('./config/ads.json' , 'w')
 f.write(json.dumps(array))
