@@ -1,10 +1,18 @@
 package in.co.sdslabs.quickr;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -14,11 +22,13 @@ public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private SearchBox search ;
+    private boolean mapCameraMovedForCurrentLocation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         search = (SearchBox) findViewById(R.id.searchbox);
         SearchRequest searchRequest = new SearchRequest(search,
                 new SearchResponse.Listener<String>() {
@@ -85,6 +95,56 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+        mMap.setMyLocationEnabled(true);
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        String locationProvider= LocationManager.GPS_PROVIDER;
+
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                onLocationChanged(location);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+        if(lastKnownLocation != null) {
+            onLocationChanged(lastKnownLocation);
+        }
+
+        Log.d("Location", "Unable");
+
+        locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-18.142, 178.431), 2));
+    }
+
+    private void onLocationChanged(Location location) {
+        if(!mapCameraMovedForCurrentLocation) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+            LatLng latLng = new LatLng(latitude, longitude);
+
+            Log.d("Latitude", Double.toString(latitude));
+            Log.d("Longitude", Double.toString(longitude));
+
+            mMap.addMarker(new MarkerOptions().position(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 6));
+
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
+            mapCameraMovedForCurrentLocation = !mapCameraMovedForCurrentLocation;
+        }
     }
 
 }
