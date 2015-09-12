@@ -2,7 +2,6 @@ package in.co.sdslabs.quickr;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -21,8 +20,8 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         search = (SearchBox) findViewById(R.id.searchbox);
-        SearchHandler searchHandler = new SearchHandler(search,
-                new SearchRequest.Listener<String>() {
+        SearchRequest searchRequest = new SearchRequest(search,
+                new SearchResponse.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // GEt the result
