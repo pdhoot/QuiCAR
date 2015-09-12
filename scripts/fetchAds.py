@@ -23,9 +23,9 @@ while condition:
 	url = 'http://api.quikr.com/public/adsByCategory?categoryId=71&from='+`j`+'&size=100'
 
 	r = requests.post(url , headers=headers)
-	result = json.loads(r.text.lower())
+	result = json.loads(r.text)
 
-	for i in result['adsbycategoryresponse']['adsbycategorydata']['docs']:
+	for i in result['AdsByCategoryResponse']['AdsByCategoryData']['docs']:
 		if i['id'] not in ads:
 			array.append(i)
 			ads.append(i['id'])

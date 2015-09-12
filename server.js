@@ -21,7 +21,7 @@ router.get('/getAds', function(req, res) {
   var brand_name = req.query.brand_name || null;
   var model = req.query.model || null;
   var json_response = ads.get_ads(brand_name, model);
-  res.json(json_response);
+  res.json( {ads: json_response } );
 });
 //-----------------------------------------------------------------------------
 
