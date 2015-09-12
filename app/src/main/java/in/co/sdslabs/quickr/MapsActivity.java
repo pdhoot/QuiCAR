@@ -2,6 +2,7 @@ package in.co.sdslabs.quickr;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,6 +10,7 @@ import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +27,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.*;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.quinny898.library.persistentsearch.SearchBox;
@@ -127,6 +132,41 @@ public class MapsActivity extends FragmentActivity {
         // manager.
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MyItem>() {
+            @Override
+            public boolean onClusterClick(Cluster<MyItem> cluster) {
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+                for (MyItem markerItem: cluster.getItems()) {
+                    builder.include(markerItem.getPosition());
+                }
+
+                LatLngBounds bounds = builder.build();
+
+                Display display = getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display.getSize(size);
+                int width = size.x;
+
+                int padding = ((width * 10) / 100); // offset from edges of the map
+                // in pixels
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,
+                        padding);
+                mMap.animateCamera(cu);
+
+                return true;
+            }
+        });
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>() {
+            @Override
+            public boolean onClusterItemClick(MyItem marker) {
+                Log.d("Latitude", Double.toString(marker.getPosition().latitude));
+                Log.d("Longitude", Double.toString(marker.getPosition().longitude));
+                return true;
+            }
+
+        });
 
         // Set some lat/lng coordinates to start with.
         double lat = 0;
