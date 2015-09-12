@@ -20,12 +20,12 @@ ads = []
 count  = 0
 array = []
 while condition:
-	url = 'http://api.quikr.com/public/adsByLocation?lat=28.573651&lon=77.257297&radius=3000&from='+`j`+'&size=100'
+	url = 'http://api.quikr.com/public/adsByCategory?categoryId=71&from='+`j`+'&size=100'
 
 	r = requests.post(url , headers=headers)
 	result = json.loads(r.text)
 
-	for i in result['AdsByLocationResponse']['AdsByLocationData']['docs']:
+	for i in result['AdsByCategoryResponse']['AdsByCategoryData']['docs']:
 		if i['id'] not in ads:
 			array.append(i)
 			ads.append(i['id'])
@@ -38,5 +38,5 @@ while condition:
 
 	j+=100
 
-f = open('../config/ads.json')
+f = open('../config/ads.json' , 'w')
 f.write(json.dumps(array))
