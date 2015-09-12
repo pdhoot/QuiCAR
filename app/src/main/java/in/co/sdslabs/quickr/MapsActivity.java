@@ -2,21 +2,46 @@ package in.co.sdslabs.quickr;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.quinny898.library.persistentsearch.SearchBox;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private SearchBox search ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        setUpMapIfNeeded();
+        search = (SearchBox) findViewById(R.id.searchbox);
+        SearchHandler searchHandler = new SearchHandler(search,
+                new SearchRequest.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // GEt the result
+                    }
+                });
+
+//        SearchResult searchable = new SearchResult("title", getResources().getDrawable(R.id.cast_notification_id));
+//        ArrayList<SearchResult> searchables = new ArrayList<>();
+//        searchables.add(searchable);
+//        search.setSearchables(searchables);
+
+        search.setMenuListener(new SearchBox.MenuListener() {
+            @Override
+            public void onMenuClick() {
+                //Hamburger has been clicked
+                Toast.makeText(MapsActivity.this, "Menu click", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override
@@ -62,4 +87,5 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
+
 }

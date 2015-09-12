@@ -25,3 +25,18 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.8.0'
     compile 'com.mcxiaoke.volley:library:1.0.6'
 }
+
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+
+}
+
+
+dependencies {
+    compile 'com.quinny898.library.persistentsearch:library:1.0.0-SNAPSHOT'
+}
