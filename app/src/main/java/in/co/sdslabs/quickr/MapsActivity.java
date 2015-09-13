@@ -176,15 +176,13 @@ public class MapsActivity extends FragmentActivity{
 
                 int randomMarkerIndex = rand.nextInt(markerCount);
 
-                Log.d("Random Marker", Integer.toString(randomMarkerIndex));
-
                 int index = 0;
 
                 for (MyItem markerItem : cluster.getItems()) {
 
                     if (index == randomMarkerIndex) {
                         // TODO: uncomment this @nightfury
-                        //populateTable(markerItem);
+                        populateTable(markerItem);
                     }
 
                     builder.include(markerItem.getPosition());
@@ -213,14 +211,11 @@ public class MapsActivity extends FragmentActivity{
 
 //                slidingPanelLayout.setVisibility(View.VISIBLE);
                 populateTable(marker);
-                Log.d("Latitude", Double.toString(marker.getPosition().latitude));
-                Log.d("Longitude", Double.toString(marker.getPosition().longitude));
+
                 try {
 
                     Ads ad = collection.getMarkerAdMapping().get(marker);
                     url = ad.getImageUrl();
-
-                    Log.d("IMAGEURL", url);
 
                     ImageRequest request = new ImageRequest(url,
                             new Response.Listener<Bitmap>() {
@@ -250,19 +245,17 @@ public class MapsActivity extends FragmentActivity{
 
         RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
 
-        Log.d("Request URL", allAdsURL);
-
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, allAdsURL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        Log.d("JSON Response", response.toString());
+                        AdsCollection coll = new AdsCollection();
 
                         //perform the result
                         try {
                             JSONArray ads = response.getJSONArray("ads");
-                            Log.d("Ads count", Integer.toString(ads.length()));
+
                             for (int i = 0; i < ads.length(); i++) {
                                 Ads ad = new Ads(ads.getJSONObject(i));
 
@@ -274,13 +267,13 @@ public class MapsActivity extends FragmentActivity{
                                 double lng = ad.getLongitude();
                                 MyItem offsetItem = new MyItem(lat, lng);
 
-                                Log.d("Lat", Double.toString(lat));
-
-                                collection.addMappedItem(offsetItem, ad);
+                                coll.addMappedItem(offsetItem, ad);
                             }
 
+                            collection = coll;
+
                             if(mClusterManager!=null) {
-                                Map<MyItem , Ads> m = collection.getMarkerAdMapping();
+                                Map<MyItem , Ads> m = coll.getMarkerAdMapping();
 
                                 Log.d("Collection Size", Integer.toString(m.size()));
 
@@ -347,11 +340,7 @@ public class MapsActivity extends FragmentActivity{
             onLocationsChanged(lastKnownLocation);
         }
 
-        Log.d("Location", "Unable");
-
         locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
-
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-18.142, 178.431), 2));
     }
 
     private void onLocationsChanged(Location location) {
@@ -361,12 +350,7 @@ public class MapsActivity extends FragmentActivity{
 
             LatLng latLng = new LatLng(latitude, longitude);
 
-            Log.d("Latitude", Double.toString(latitude));
-            Log.d("Longitude", Double.toString(longitude));
-
-            mMap.addMarker(new MarkerOptions().position(latLng));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 6));
-
             mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
 
             mapCameraMovedForCurrentLocation = !mapCameraMovedForCurrentLocation;

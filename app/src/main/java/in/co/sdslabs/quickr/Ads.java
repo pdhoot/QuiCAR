@@ -103,13 +103,18 @@ public class Ads {
 
     public String getImageUrl() throws JSONException
     {
-        String url = "";
-        try {
-            url = jsonObject.getString("image");
-        }
-        catch(Exception e)
-        {
-            url = jsonObject.getJSONArray("image").getString(0);
+        String url = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png";
+
+        int images = Integer.parseInt(jsonObject.getString("image_count"));
+
+        if(images == 1) {
+            url = jsonObject.getString("images");
+        } else if(images > 1) {
+            Log.d("IMAGES_ARRAY", jsonObject.getJSONArray("images").toString());
+
+            url = jsonObject.getJSONArray("images").getString(0);
+
+            Log.d("bbbc",url);
         }
 
         return url;
