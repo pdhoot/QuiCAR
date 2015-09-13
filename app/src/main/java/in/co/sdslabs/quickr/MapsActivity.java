@@ -45,6 +45,7 @@ public class MapsActivity extends FragmentActivity{
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private SearchBox search;
     private String url = " ";
+    private final String allAdsURL = "http://vps.rkravi.com:8000/getAds";
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
 
@@ -171,6 +172,60 @@ public class MapsActivity extends FragmentActivity{
             }
 
         });
+
+        RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
+
+        Log.d("Request URL", allAdsURL);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, allAdsURL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        AdsCollection collection = new AdsCollection();
+
+                        Log.d("JSON Response", response.toString());
+
+                        //perform the result
+                        try {
+                            JSONArray ads = response.getJSONArray("ads");
+                            Log.d("Ads count", Integer.toString(ads.length()));
+                            for (int i = 0; i < ads.length(); i++) {
+                                Ads ad = new Ads(ads.getJSONObject(i));
+
+                                if(!ad.hasGeoCoord()) {
+                                    continue;
+                                }
+
+                                double lat = ad.getLatitude();
+                                double lng = ad.getLongitude();
+                                MyItem offsetItem = new MyItem(lat, lng);
+
+                                Log.d("Lat", Double.toString(lat));
+
+                                collection.addMappedItem(offsetItem, ad);
+                            }
+
+                            if(mClusterManager!=null) {
+                                Map<MyItem , Ads> m = collection.getMarkerAdMapping();
+
+                                Log.d("Collection Size", Integer.toString(m.size()));
+                                for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
+                                {
+                                    mClusterManager.addItem(entry.getKey());
+                                }
+                            }
+                        }
+                        catch(JSONException e) {}
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //show error
+            }
+
+        });
+
+        requestQueue.add(request);
 
     }
 
