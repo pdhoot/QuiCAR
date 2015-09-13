@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -47,6 +50,7 @@ public class MapsActivity extends FragmentActivity{
     private String url = " ";
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
+    private Map<MyItem, Ads> m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public class MapsActivity extends FragmentActivity{
                     @Override
                     public void onResponse(AdsCollection ads) {
                         if(mClusterManager!=null) {
-                            Map<MyItem , Ads> m = ads.getMarkerAdMapping();
+                            m = ads.getMarkerAdMapping();
 
                             Log.d("Collection Size", Integer.toString(m.size()));
                             for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
@@ -165,6 +169,7 @@ public class MapsActivity extends FragmentActivity{
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>() {
             @Override
             public boolean onClusterItemClick(MyItem marker) {
+                populateTable(marker);
                 Log.d("Latitude", Double.toString(marker.getPosition().latitude));
                 Log.d("Longitude", Double.toString(marker.getPosition().longitude));
                 return true;
@@ -248,6 +253,35 @@ public class MapsActivity extends FragmentActivity{
             loc2.setLongitude(target.longitude);
             Float distance = center.distanceTo(loc2);
             Log.d("pdhoot", distance.toString());
+        }
+    }
+
+    private void populateTable(MyItem marker)
+    {
+        Ads ad = m.get(marker);
+        TextView titleTextView = (TextView) findViewById(R.id.title);
+        TextView yearTextView = (TextView) findViewById(R.id.year);
+        TextView priceTextView = (TextView) findViewById(R.id.price);
+        TableLayout details = (TableLayout) findViewById(R.id.details);
+        
+        for(int i=0; i < 5; i++)
+        {
+            TableRow tr = new TableRow(this);
+            TextView c1 = new TextView(this);
+            c1.setText("helloqew");
+            TextView c2 = new TextView(this);
+            c2.setText("bfja");
+            tr.addView(c1);
+            tr.addView(c2);
+            details.addView(tr);
+        }
+
+        try {
+            titleTextView.setText(ad.getTitle());
+            yearTextView.setText(ad.getYear());
+            priceTextView.setText(ad.getPrice());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
