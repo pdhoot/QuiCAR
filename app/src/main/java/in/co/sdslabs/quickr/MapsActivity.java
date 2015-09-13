@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity{
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
     private AdsCollection collection = new AdsCollection();
-//    private RelativeLayout slidingPanelLayout;
+    private SlidingUpPanelLayout slidingPanelLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +75,9 @@ public class MapsActivity extends FragmentActivity{
         search = (SearchBox) findViewById(R.id.searchbox);
         search.setLogoText("Search");
 
-//        slidingPanelLayout = (RelativeLayout) findViewById(R.id.abcd);
-//        slidingPanelLayout.setVisibility(View.INVISIBLE);
+        slidingPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        //slidingPanelLayout.setVisibility(View.INVISIBLE);
+        slidingPanelLayout.setPanelHeight(0);
 
         SearchRequest searchRequest = new SearchRequest(search,
                 new SearchResponse.Listener<AdsCollection>() {
@@ -101,7 +102,7 @@ public class MapsActivity extends FragmentActivity{
                         }
 
                     }
-                });
+                }, slidingPanelLayout);
 
         ArrayList<SearchResult> searchables = new ArrayList<>();
 
@@ -209,7 +210,8 @@ public class MapsActivity extends FragmentActivity{
             @Override
             public boolean onClusterItemClick(MyItem marker) {
 
-//                slidingPanelLayout.setVisibility(View.VISIBLE);
+                //slidingPanelLayout.setVisibility(View.VISIBLE);
+                slidingPanelLayout.setPanelHeight(210);
                 populateTable(marker);
 
                 try {
@@ -235,8 +237,9 @@ public class MapsActivity extends FragmentActivity{
                     VolleySingleton vol = VolleySingleton.getInstance();
                     RequestQueue requestQue = vol.getRequestQueue();
                     requestQue.add(request);
+                } catch (Exception e) {
+                    System.out.println("error");
                 }
-                catch(Exception e){System.out.println("error");}
 
                 return true;
             }
@@ -372,6 +375,8 @@ public class MapsActivity extends FragmentActivity{
 
     private void populateTable(MyItem marker)
     {
+        slidingPanelLayout.setVisibility(View.VISIBLE);
+
         Ads ad = collection.getMarkerAdMapping().get(marker);
 
         String attributes[] = ad.getAttributeArray();
@@ -380,6 +385,7 @@ public class MapsActivity extends FragmentActivity{
         TextView yearTextView = (TextView) findViewById(R.id.year);
         TextView priceTextView = (TextView) findViewById(R.id.price);
         TableLayout details = (TableLayout) findViewById(R.id.details);
+        details.removeAllViews();
         details.setStretchAllColumns(true);
         details.bringToFront();
 

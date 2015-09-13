@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.quinny898.library.persistentsearch.SearchBox;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,20 +22,24 @@ import java.net.URLEncoder;
  */
 public class SearchRequest {
     private SearchResponse.Listener<AdsCollection> listener;
+    private SlidingUpPanelLayout slidingUpPanelLayout;
 
-    public SearchRequest(final SearchBox search, SearchResponse.Listener<AdsCollection> listener) {
+    public SearchRequest(final SearchBox search, SearchResponse.Listener<AdsCollection> listener, final SlidingUpPanelLayout slidingUpPanelLayout) {
         this.listener = listener;
+        this.slidingUpPanelLayout = slidingUpPanelLayout;
 
         search.setSearchListener(new SearchBox.SearchListener() {
 
             @Override
             public void onSearchOpened() {
+                slidingUpPanelLayout.setPanelHeight(0);
                 Log.d("search opened", "yeah");
             }
 
 
             @Override
             public void onSearchTermChanged() {
+                slidingUpPanelLayout.setPanelHeight(0);
                 //React to the search term changing
                 //Called after it has updated results
                 Log.d("search term changed", "yeah");
@@ -43,6 +48,7 @@ public class SearchRequest {
 
             @Override
             public void onSearch(String searchTerm) {
+                slidingUpPanelLayout.setPanelHeight(0);
                 //Call sendGETRequest with url and the search term
                 String url = "";
 
@@ -89,6 +95,7 @@ public class SearchRequest {
 
             @Override
             public void onSearchCleared() {
+                slidingUpPanelLayout.setPanelHeight(0);
                 Log.d("search cleared", "yeah");
 
             }
