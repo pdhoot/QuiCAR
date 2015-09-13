@@ -12,12 +12,15 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -62,6 +65,7 @@ public class MapsActivity extends FragmentActivity{
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
     private AdsCollection collection = new AdsCollection();
+//    private RelativeLayout slidingPanelLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,9 @@ public class MapsActivity extends FragmentActivity{
 
         search = (SearchBox) findViewById(R.id.searchbox);
         search.setLogoText("Search");
+
+//        slidingPanelLayout = (RelativeLayout) findViewById(R.id.abcd);
+//        slidingPanelLayout.setVisibility(View.INVISIBLE);
 
         SearchRequest searchRequest = new SearchRequest(search,
                 new SearchResponse.Listener<AdsCollection>() {
@@ -203,6 +210,8 @@ public class MapsActivity extends FragmentActivity{
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>() {
             @Override
             public boolean onClusterItemClick(MyItem marker) {
+
+//                slidingPanelLayout.setVisibility(View.VISIBLE);
                 populateTable(marker);
                 Log.d("Latitude", Double.toString(marker.getPosition().latitude));
                 Log.d("Longitude", Double.toString(marker.getPosition().longitude));
