@@ -59,17 +59,10 @@ public class MapsActivity extends FragmentActivity{
                 new SearchResponse.Listener<AdsCollection>() {
                     @Override
                     public void onResponse(AdsCollection ads) {
-                        Log.d("Collection", "Received");
-                        if(mClusterManager != null) {
-                            Log.d("ClusterManager", "Exists");
-
+                        if(mClusterManager!=null) {
                             Map<MyItem , Ads> m = ads.getMarkerAdMapping();
-
-                            Log.d("Count of Collection", Integer.toString(m.size()));
-
                             for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
                             {
-                                Log.d("Marking latitude", Double.toString(entry.getKey().getPosition().latitude));
                                 mClusterManager.addItem(entry.getKey());
                             }
                         }
