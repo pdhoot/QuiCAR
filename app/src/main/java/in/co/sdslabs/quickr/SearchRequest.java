@@ -39,7 +39,7 @@ public class SearchRequest {
             @Override
             public void onSearch(String searchTerm) {
                 //Call sendGETRequest with url and the search term
-                String url = "vps.rkravi.com:8000/getAds?model=" + searchTerm;
+                String url = "http://vps.rkravi.com:8000/getAds?model=" + searchTerm;
                 sendGETRequest(url);
                 Log.d("onsearch", "yeah");
 

@@ -39,5 +39,6 @@ repositories {
 
 
 dependencies {
+    compile 'com.sothree.slidinguppanel:library:3.1.1'
     compile 'com.quinny898.library.persistentsearch:library:1.0.0-SNAPSHOT'
 }
