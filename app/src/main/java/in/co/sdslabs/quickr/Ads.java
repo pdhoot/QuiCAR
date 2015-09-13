@@ -103,7 +103,7 @@ public class Ads {
 
     public String getImageUrl() throws JSONException
     {
-        String url = "http://orig11.deviantart.net/0f16/f/2012/283/f/5/car_vector_by_vectorportal-d5hda7s.jpg";
+        String url = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png";
 
         int images = Integer.parseInt(jsonObject.getString("image_count"));
 
