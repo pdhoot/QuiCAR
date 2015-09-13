@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoPanelHeight="68dp"
+    sothree:umanoPanelHeight="130dp"
     sothree:umanoShadowHeight="4dp">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,11 +20,109 @@
 
     </fragment>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:text="The Awesome Sliding Up Panel"
-        android:textSize="16sp" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:background="#009688"
+            android:id="@+id/adi"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title"
+                android:text="Grey 2008 Hyundai i10 Sportz - 54,090 kms driven"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="0dp"
+                android:textSize="25sp"
+                android:padding="10dp"
+                android:fontFamily="Roboto"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="16dp" />
+
+            <FrameLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="20dp"
+                android:padding="2dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/frameLayout"></FrameLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/title"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/frameLayout"
+                android:layout_toEndOf="@+id/frameLayout"
+                android:layout_marginTop="10dp">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_margin="0dp">
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:text="Model"
+                        android:textSize="18dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:text="Price(Rs.)"
+                        android:textSize="18dp"
+                        android:layout_weight="1" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_margin="0dp">
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:text="2010"
+                        android:textSize="18dp"
+                        android:layout_weight="1"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:text="350000"
+                        android:textSize="18dp"
+                        android:layout_weight="1"
+                        android:textStyle="bold" />
+                </TableRow>
+            </TableLayout>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:id="@+id/imageView"
+            android:cropToPadding="false"
+            android:padding="2dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="70dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
