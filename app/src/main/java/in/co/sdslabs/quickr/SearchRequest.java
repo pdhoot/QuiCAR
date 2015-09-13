@@ -36,6 +36,8 @@ public class SearchRequest {
 
             @Override
             public void onSearch(String searchTerm) {
+                //Call sendGETRequest with url and the search term
+
                 Log.d("onsearch", "yeah");
 
             }
@@ -55,6 +57,7 @@ public class SearchRequest {
         });
     }
 
+    // Modify this function according to backend to fetch ads for given brand name or car name
     private void sendGETRequest(String url) {
         RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
 
