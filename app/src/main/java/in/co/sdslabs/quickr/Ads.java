@@ -1,4 +1,6 @@
 package in.co.sdslabs.quickr;
+import android.util.Log;
+
 import org.json.*;
 
 /**
@@ -6,8 +8,31 @@ import org.json.*;
  */
 public class Ads {
     private JSONObject jsonObject;
+    private final String possibleKeys[] = {"attribute_Condition", "attribute_Color", "ad_quality_score", "attribute_Fuel_Type", "year", "ad_locality", "attribute_No_of_owners"};
+    private final String humanReadAbleText[] = {"Condition", "Color", "Ad Quality Score", "Fuel Type", "Year", "Ad Locality", "No Of Owners"};
+
     public Ads(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
+    }
+
+    public String[] getAttributeArray() {
+        return possibleKeys;
+    }
+
+    public String getAttributeValue(String attribute) throws JSONException{
+        return jsonObject.getString(attribute);
+    }
+
+    public String getHumanReadableText(String attribute) {
+        int index = -1;
+        for (int i=0;i<possibleKeys.length;i++) {
+            if (possibleKeys[i].equals(attribute)) {
+                index = i;
+                break;
+            }
+        }
+
+        return humanReadAbleText[index];
     }
 
     public String getLocality() throws JSONException
