@@ -1,3 +1,4 @@
+
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -9,3 +10,15 @@ app/src/main/res/values/secret_utils.xml
 .idea
 QuiCAR.iml
 app/app.iml
+
+# node modules
+node_modules/
+
+# npm debug log
+npm-debug.log
+
+# config
+config/config.json
+config/config.cfg
+config/ads.json
+
