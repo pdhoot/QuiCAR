@@ -42,12 +42,15 @@ import org.json.*;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MapsActivity extends FragmentActivity{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private SearchBox search;
     private String url = " ";
+    private final String allAdsURL = "http://vps.rkravi.com:8000/getAds";
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
     private Map<MyItem, Ads> m;
@@ -58,6 +61,7 @@ public class MapsActivity extends FragmentActivity{
         setContentView(R.layout.activity_maps);
 
         search = (SearchBox) findViewById(R.id.searchbox);
+        search.setLogoText("Search");
 
         SearchRequest searchRequest = new SearchRequest(search,
                 new SearchResponse.Listener<AdsCollection>() {
@@ -67,6 +71,10 @@ public class MapsActivity extends FragmentActivity{
                             m = ads.getMarkerAdMapping();
 
                             Log.d("Collection Size", Integer.toString(m.size()));
+
+                            // clear all existing markers
+                            mClusterManager.clearItems();
+
                             for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
                             {
                                 mClusterManager.addItem(entry.getKey());
@@ -129,9 +137,6 @@ public class MapsActivity extends FragmentActivity{
     }
 
     private void setUpClustering() {
-        // Position the map.
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0, 0), 10));
-
         // Initialize the manager with the context and the map.
         // (Activity extends context, so we can pass 'this' in the constructor.)
         mClusterManager = new ClusterManager<MyItem>(this, mMap);
@@ -146,8 +151,25 @@ public class MapsActivity extends FragmentActivity{
 
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
+                int markerCount = cluster.getSize();
+
+                Random rand = new Random();
+
+                int randomMarkerIndex = rand.nextInt(markerCount);
+
+                Log.d("Random Marker", Integer.toString(randomMarkerIndex));
+
+                int index = 0;
+
                 for (MyItem markerItem : cluster.getItems()) {
+
+                    if(index == randomMarkerIndex) {
+                        // TODO: uncomment this @nightfury
+                        //populateTable(markerItem);
+                    }
+
                     builder.include(markerItem.getPosition());
+                    index++;
                 }
 
                 LatLngBounds bounds = builder.build();
@@ -176,6 +198,64 @@ public class MapsActivity extends FragmentActivity{
             }
 
         });
+
+        RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
+
+        Log.d("Request URL", allAdsURL);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, allAdsURL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        AdsCollection collection = new AdsCollection();
+
+                        Log.d("JSON Response", response.toString());
+
+                        //perform the result
+                        try {
+                            JSONArray ads = response.getJSONArray("ads");
+                            Log.d("Ads count", Integer.toString(ads.length()));
+                            for (int i = 0; i < ads.length(); i++) {
+                                Ads ad = new Ads(ads.getJSONObject(i));
+
+                                if(!ad.hasGeoCoord()) {
+                                    continue;
+                                }
+
+                                double lat = ad.getLatitude();
+                                double lng = ad.getLongitude();
+                                MyItem offsetItem = new MyItem(lat, lng);
+
+                                Log.d("Lat", Double.toString(lat));
+
+                                collection.addMappedItem(offsetItem, ad);
+                            }
+
+                            if(mClusterManager!=null) {
+                                Map<MyItem , Ads> m = collection.getMarkerAdMapping();
+
+                                Log.d("Collection Size", Integer.toString(m.size()));
+
+                                // clear all existing markers
+                                mClusterManager.clearItems();
+
+                                for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
+                                {
+                                    mClusterManager.addItem(entry.getKey());
+                                }
+                            }
+                        }
+                        catch(JSONException e) {}
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //show error
+            }
+
+        });
+
+        requestQueue.add(request);
 
     }
 
@@ -237,7 +317,7 @@ public class MapsActivity extends FragmentActivity{
             mMap.addMarker(new MarkerOptions().position(latLng));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 6));
 
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
 
             mapCameraMovedForCurrentLocation = !mapCameraMovedForCurrentLocation;
         }
