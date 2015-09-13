@@ -23,7 +23,8 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#eeeeee">
+        android:background="#eeeeee"
+        android:id="@+id/abcd">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -67,7 +68,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_toRightOf="@+id/frameLayout"
                 android:layout_toEndOf="@+id/frameLayout"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="70dp">
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
