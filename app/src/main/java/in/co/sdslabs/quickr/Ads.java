@@ -108,9 +108,12 @@ public class Ads {
         int images = Integer.parseInt(jsonObject.getString("image_count"));
 
         if(images == 1) {
-            url = jsonObject.getString("image");
+            url = jsonObject.getString("images");
         } else if(images > 1) {
-            url = jsonObject.getJSONArray("image").getJSONObject(0).toString();
+            Log.d("IMAGES_ARRAY", jsonObject.getJSONArray("images").toString());
+
+            url = jsonObject.getJSONArray("images").getString(0);
+
             Log.d("bbbc",url);
         }
 
