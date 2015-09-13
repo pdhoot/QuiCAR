@@ -10,44 +10,44 @@ public class Ads {
         this.jsonObject = jsonObject;
     }
 
-    public String getLocality()
+    public String getLocality() throws JSONException
     {
         return jsonObject.getString("ad_locality");
     }
 
-    public String getTitle()
+    public String getTitle() throws JSONException
     {
         return jsonObject.getString("title");
     }
 
-    public String getKmsDriven()
+    public String getKmsDriven() throws JSONException
     {
         return jsonObject.getString("kms_Driven");
     }
 
-    public String getPrice()
+    public String getPrice() throws JSONException
     {
         return jsonObject.getString("attribute_price");
     }
 
-    public String getYear()
+    public String getYear() throws JSONException
     {
         return jsonObject.getString("year");
     }
 
-    public String getStateName()
+    public String getStateName() throws JSONException
     {
         return jsonObject.getString("stateName");
     }
 
-    public JSONArray getImages()
+    public JSONArray getImages() throws JSONException
     {
         return jsonObject.getJSONArray("images");
     }
 
-    public String getFuelType()
+    public String getFuelType() throws JSONException
     {
         return jsonObject.getString("attribute_Fuel_Type");
     }
-    
+
 }

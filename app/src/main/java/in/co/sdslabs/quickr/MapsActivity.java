@@ -64,12 +64,14 @@ public class MapsActivity extends FragmentActivity {
 //        search.setSearchables(searchables);
         AdsCollection collection = new AdsCollection();
         JSONObject obj = new JSONObject(response);
-        JSONArray ads = obj.getJSONArray("ads");
-        for(int i = 0 ; i<ads.length() ; i++)
-        {
-            Ads ad = new Ads(ads.getJSONObject(i));
-            collection.adList.add(ad);
+        try {
+            JSONArray ads = obj.getJSONArray("ads");
+            for (int i = 0; i < ads.length(); i++) {
+                Ads ad = new Ads(ads.getJSONObject(i));
+                collection.adList.add(ad);
+            }
         }
+        catch(JSONException  e) {}
 
     }
 
