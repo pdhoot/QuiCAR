@@ -1,6 +1,7 @@
 package in.co.sdslabs.quickr;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.location.Criteria;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -53,7 +55,7 @@ public class MapsActivity extends FragmentActivity{
     private final String allAdsURL = "http://vps.rkravi.com:8000/getAds";
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
-    private Map<MyItem, Ads> m;
+    private Map<MyItem, Ads> collection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class MapsActivity extends FragmentActivity{
                     @Override
                     public void onResponse(AdsCollection ads) {
                         if(mClusterManager!=null) {
-                            m = ads.getMarkerAdMapping();
+                            Map<MyItem, Ads> m = ads.getMarkerAdMapping();
 
                             Log.d("Collection Size", Integer.toString(m.size()));
 
@@ -163,7 +165,7 @@ public class MapsActivity extends FragmentActivity{
 
                 for (MyItem markerItem : cluster.getItems()) {
 
-                    if(index == randomMarkerIndex) {
+                    if (index == randomMarkerIndex) {
                         // TODO: uncomment this @nightfury
                         //populateTable(markerItem);
                     }
@@ -338,31 +340,37 @@ public class MapsActivity extends FragmentActivity{
 
     private void populateTable(MyItem marker)
     {
-        Ads ad = m.get(marker);
-        TextView titleTextView = (TextView) findViewById(R.id.title);
-        TextView yearTextView = (TextView) findViewById(R.id.year);
-        TextView priceTextView = (TextView) findViewById(R.id.price);
-        TableLayout details = (TableLayout) findViewById(R.id.details);
-        
-        for(int i=0; i < 5; i++)
-        {
-            TableRow tr = new TableRow(this);
-            TextView c1 = new TextView(this);
-            c1.setText("helloqew");
-            TextView c2 = new TextView(this);
-            c2.setText("bfja");
-            tr.addView(c1);
-            tr.addView(c2);
-            details.addView(tr);
-        }
-
-        try {
-            titleTextView.setText(ad.getTitle());
-            yearTextView.setText(ad.getYear());
-            priceTextView.setText(ad.getPrice());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        Ads ad = collection.get(marker);
+//        TextView titleTextView = (TextView) findViewById(R.id.title);
+//        TextView yearTextView = (TextView) findViewById(R.id.year);
+//        TextView priceTextView = (TextView) findViewById(R.id.price);
+//        TableLayout details = (TableLayout) findViewById(R.id.details);
+//
+//        for(int i=0; i < 5; i++)
+//        {
+//            TableRow tr = new TableRow(this);
+////            tr.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//            tr.setPadding(5, 5, 5, 5);
+//            TextView c1 = new TextView(this);
+//            c1.setText("helloqew");
+//            c1.setTextSize(18);
+////            c1.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f));
+//            TextView c2 = new TextView(this);
+//            c2.setText("bfja");
+//            c2.setTextSize(18);
+////            c2.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f));
+//            tr.addView(c1);
+//            tr.addView(c2);
+//            details.addView(tr);
+//        }
+//
+//        try {
+//            titleTextView.setText(ad.getTitle());
+//            yearTextView.setText(ad.getYear());
+//            priceTextView.setText(ad.getPrice());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
