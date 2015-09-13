@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.ads.AdSize;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 
@@ -55,7 +57,7 @@ public class MapsActivity extends FragmentActivity{
     private final String allAdsURL = "http://vps.rkravi.com:8000/getAds";
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
-    private Map<MyItem, Ads> collection;
+    private AdsCollection collection = new AdsCollection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class MapsActivity extends FragmentActivity{
                 new SearchResponse.Listener<AdsCollection>() {
                     @Override
                     public void onResponse(AdsCollection ads) {
+                        collection = ads;
+
                         if(mClusterManager!=null) {
                             Map<MyItem, Ads> m = ads.getMarkerAdMapping();
 
@@ -211,7 +215,6 @@ public class MapsActivity extends FragmentActivity{
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        AdsCollection collection = new AdsCollection();
 
                         Log.d("JSON Response", response.toString());
 
@@ -344,37 +347,38 @@ public class MapsActivity extends FragmentActivity{
 
     private void populateTable(MyItem marker)
     {
-//        Ads ad = collection.get(marker);
-//        TextView titleTextView = (TextView) findViewById(R.id.title);
-//        TextView yearTextView = (TextView) findViewById(R.id.year);
-//        TextView priceTextView = (TextView) findViewById(R.id.price);
-//        TableLayout details = (TableLayout) findViewById(R.id.details);
-//
-//        for(int i=0; i < 5; i++)
-//        {
-//            TableRow tr = new TableRow(this);
-////            tr.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//            tr.setPadding(5, 5, 5, 5);
-//            TextView c1 = new TextView(this);
-//            c1.setText("helloqew");
-//            c1.setTextSize(18);
-////            c1.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f));
-//            TextView c2 = new TextView(this);
-//            c2.setText("bfja");
-//            c2.setTextSize(18);
-////            c2.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f));
-//            tr.addView(c1);
-//            tr.addView(c2);
-//            details.addView(tr);
-//        }
-//
-//        try {
-//            titleTextView.setText(ad.getTitle());
-//            yearTextView.setText(ad.getYear());
-//            priceTextView.setText(ad.getPrice());
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        Ads ad = collection.getMarkerAdMapping().get(marker);
+
+        TextView titleTextView = (TextView) findViewById(R.id.title);
+        TextView yearTextView = (TextView) findViewById(R.id.year);
+        TextView priceTextView = (TextView) findViewById(R.id.price);
+        TableLayout details = (TableLayout) findViewById(R.id.details);
+
+        for(int i=0; i < 5; i++)
+        {
+            TableRow tr = new TableRow(this);
+            tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+            tr.setPadding(5, 5, 5, 5);
+            TextView c1 = new TextView(this);
+            c1.setText("helloqew");
+            c1.setTextSize(18);
+            c1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            TextView c2 = new TextView(this);
+            c2.setText("bfja");
+            c2.setTextSize(18);
+            c2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            tr.addView(c1);
+            tr.addView(c2);
+            details.addView(tr);
+        }
+
+        try {
+            titleTextView.setText(ad.getTitle());
+            yearTextView.setText(ad.getYear());
+            priceTextView.setText(ad.getPrice());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }
