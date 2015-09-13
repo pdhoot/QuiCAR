@@ -103,13 +103,15 @@ public class Ads {
 
     public String getImageUrl() throws JSONException
     {
-        String url = "";
-        try {
+        String url = "http://orig11.deviantart.net/0f16/f/2012/283/f/5/car_vector_by_vectorportal-d5hda7s.jpg";
+
+        int images = Integer.parseInt(jsonObject.getString("image_count"));
+
+        if(images == 1) {
             url = jsonObject.getString("image");
-        }
-        catch(Exception e)
-        {
-            url = jsonObject.getJSONArray("image").getString(0);
+        } else if(images > 1) {
+            url = jsonObject.getJSONArray("image").getJSONObject(0).toString();
+            Log.d("bbbc",url);
         }
 
         return url;

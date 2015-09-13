@@ -61,7 +61,7 @@ public class MapsActivity extends FragmentActivity{
     private final String allAdsURL = "http://vps.rkravi.com:8000/getAds";
     private ClusterManager<MyItem> mClusterManager;
     private boolean mapCameraMovedForCurrentLocation = false;
-    private AdsCollection collection = new AdsCollection();
+    private AdsCollection collection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,8 +207,12 @@ public class MapsActivity extends FragmentActivity{
                 Log.d("Latitude", Double.toString(marker.getPosition().latitude));
                 Log.d("Longitude", Double.toString(marker.getPosition().longitude));
                 try {
+                    Log.d("IMAGEURL", url);
 
                     Ads ad = collection.getMarkerAdMapping().get(marker);
+
+                    Log.d("Here!", "OK?");
+
                     url = ad.getImageUrl();
 
                     Log.d("IMAGEURL", url);
@@ -249,11 +253,14 @@ public class MapsActivity extends FragmentActivity{
                     public void onResponse(JSONObject response) {
 
                         Log.d("JSON Response", response.toString());
+                        AdsCollection coll = new AdsCollection();
 
                         //perform the result
                         try {
                             JSONArray ads = response.getJSONArray("ads");
+
                             Log.d("Ads count", Integer.toString(ads.length()));
+
                             for (int i = 0; i < ads.length(); i++) {
                                 Ads ad = new Ads(ads.getJSONObject(i));
 
@@ -267,11 +274,13 @@ public class MapsActivity extends FragmentActivity{
 
                                 Log.d("Lat", Double.toString(lat));
 
-                                collection.addMappedItem(offsetItem, ad);
+                                coll.addMappedItem(offsetItem, ad);
                             }
 
+                            collection = coll;
+
                             if(mClusterManager!=null) {
-                                Map<MyItem , Ads> m = collection.getMarkerAdMapping();
+                                Map<MyItem , Ads> m = coll.getMarkerAdMapping();
 
                                 Log.d("Collection Size", Integer.toString(m.size()));
 
