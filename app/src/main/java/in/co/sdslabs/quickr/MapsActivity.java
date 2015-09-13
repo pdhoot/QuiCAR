@@ -3,6 +3,7 @@ package in.co.sdslabs.quickr;
 import android.Manifest;
 import android.app.ActionBar;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
@@ -349,27 +350,37 @@ public class MapsActivity extends FragmentActivity{
     {
         Ads ad = collection.getMarkerAdMapping().get(marker);
 
+        String attributes[] = ad.getAttributeArray();
+
         TextView titleTextView = (TextView) findViewById(R.id.title);
         TextView yearTextView = (TextView) findViewById(R.id.year);
         TextView priceTextView = (TextView) findViewById(R.id.price);
         TableLayout details = (TableLayout) findViewById(R.id.details);
+        details.setStretchAllColumns(true);
+        details.bringToFront();
 
-        for(int i=0; i < 5; i++)
-        {
+        for (String attribute:attributes) {
+
+
             TableRow tr = new TableRow(this);
-            tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             tr.setPadding(5, 5, 5, 5);
             TextView c1 = new TextView(this);
-            c1.setText("helloqew");
+            c1.setText(ad.getHumanReadableText(attribute));
             c1.setTextSize(18);
-            c1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            TextView c2 = new TextView(this);
-            c2.setText("bfja");
-            c2.setTextSize(18);
-            c2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            c1.setTextColor(Color.BLACK);
             tr.addView(c1);
+            TextView c2 = new TextView(this);
+            try {
+                Log.d(ad.getHumanReadableText(attribute), ad.getAttributeValue(attribute));
+                c2.setText(ad.getAttributeValue(attribute));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            c2.setTextSize(18);
+            c2.setTextColor(Color.BLACK);
             tr.addView(c2);
             details.addView(tr);
+
         }
 
         try {

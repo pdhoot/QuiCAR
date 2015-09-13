@@ -52,7 +52,7 @@ public class Ads {
 
     public String getPrice() throws JSONException
     {
-        return jsonObject.getString("attribute_price");
+        return jsonObject.getString("attribute_Price");
     }
 
     public String getYear() throws JSONException
