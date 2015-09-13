@@ -38,6 +38,7 @@ import com.quinny898.library.persistentsearch.SearchResult;
 import org.json.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity{
 
@@ -58,10 +59,14 @@ public class MapsActivity extends FragmentActivity{
                 new SearchResponse.Listener<AdsCollection>() {
                     @Override
                     public void onResponse(AdsCollection ads) {
-                        // loop
-                        //for() {
-                          //  mClusterManager.addItem(item);
-                        //}
+                        if(mClusterManager!=null) {
+                            Map<MyItem , Ads> m = ads.getMarkerAdMapping();
+                            for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
+                            {
+                                mClusterManager.addItem(entry.getKey());
+                            }
+                        }
+
                     }
                 });
 
@@ -165,18 +170,6 @@ public class MapsActivity extends FragmentActivity{
 
         });
 
-        // Set some lat/lng coordinates to start with.
-        double lat = 0;
-        double lng = 0;
-
-        // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            lat = lat + offset;
-            lng = lng + offset;
-            MyItem offsetItem = new MyItem(lat, lng);
-            mClusterManager.addItem(offsetItem);
-        }
     }
 
     /**
