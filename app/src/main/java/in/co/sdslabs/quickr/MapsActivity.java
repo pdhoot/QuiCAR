@@ -183,6 +183,7 @@ public class MapsActivity extends FragmentActivity{
                     if (index == randomMarkerIndex) {
                         // TODO: uncomment this @nightfury
                         populateTable(markerItem);
+                        updateImage(markerItem);
                     }
 
                     builder.include(markerItem.getPosition());
@@ -210,33 +211,8 @@ public class MapsActivity extends FragmentActivity{
             public boolean onClusterItemClick(MyItem marker) {
 
 //                slidingPanelLayout.setVisibility(View.VISIBLE);
+                updateImage(marker);
                 populateTable(marker);
-
-                try {
-
-                    Ads ad = collection.getMarkerAdMapping().get(marker);
-                    url = ad.getImageUrl();
-
-                    ImageRequest request = new ImageRequest(url,
-                            new Response.Listener<Bitmap>() {
-                                @Override
-                                public void onResponse(Bitmap bitmap) {
-                                    ImageView mImageView;
-                                    mImageView = (ImageView) findViewById(R.id.imageView);
-                                    mImageView.setImageBitmap(bitmap);
-                                }
-                            }, 0, 0, null,
-                            new Response.ErrorListener() {
-                                public void onErrorResponse(VolleyError error) {
-
-                                }
-                            });
-                    // Access the RequestQueue through your singleton class.
-                    VolleySingleton vol = VolleySingleton.getInstance();
-                    RequestQueue requestQue = vol.getRequestQueue();
-                    requestQue.add(request);
-                }
-                catch(Exception e){System.out.println("error");}
 
                 return true;
             }
@@ -414,6 +390,33 @@ public class MapsActivity extends FragmentActivity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateImage(MyItem marker) {
+        try {
+            Ads ad = collection.getMarkerAdMapping().get(marker);
+            String imageURL = ad.getImageUrl();
+
+            ImageRequest request = new ImageRequest(imageURL,
+                    new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap bitmap) {
+                            ImageView mImageView;
+                            mImageView = (ImageView) findViewById(R.id.imageView);
+                            mImageView.setImageBitmap(bitmap);
+                        }
+                    }, 0, 0, null,
+                    new Response.ErrorListener() {
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+            // Access the RequestQueue through your singleton class.
+            VolleySingleton vol = VolleySingleton.getInstance();
+            RequestQueue requestQue = vol.getRequestQueue();
+            requestQue.add(request);
+        }
+        catch(Exception e){System.out.println("error");}
     }
 
 }
