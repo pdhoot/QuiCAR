@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ActionBar;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -26,6 +28,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.ads.AdSize;
 import com.google.android.gms.maps.CameraUpdate;
@@ -203,6 +206,34 @@ public class MapsActivity extends FragmentActivity{
                 populateTable(marker);
                 Log.d("Latitude", Double.toString(marker.getPosition().latitude));
                 Log.d("Longitude", Double.toString(marker.getPosition().longitude));
+                try {
+
+                    Ads ad = collection.getMarkerAdMapping().get(marker);
+                    url = ad.getImageUrl();
+
+                    Log.d("IMAGEURL", url);
+
+                    ImageRequest request = new ImageRequest(url,
+                            new Response.Listener<Bitmap>() {
+                                @Override
+                                public void onResponse(Bitmap bitmap) {
+                                    ImageView mImageView;
+                                    mImageView = (ImageView) findViewById(R.id.imageView);
+                                    mImageView.setImageBitmap(bitmap);
+                                }
+                            }, 0, 0, null,
+                            new Response.ErrorListener() {
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            });
+                    // Access the RequestQueue through your singleton class.
+                    VolleySingleton vol = VolleySingleton.getInstance();
+                    RequestQueue requestQue = vol.getRequestQueue();
+                    requestQue.add(request);
+                }
+                catch(Exception e){System.out.println("error");}
+
                 return true;
             }
 
