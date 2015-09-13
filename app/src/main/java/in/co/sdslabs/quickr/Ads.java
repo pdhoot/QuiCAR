@@ -101,6 +101,18 @@ public class Ads {
         }
     }
 
-    public
+    public String getImageUrl() throws JSONException
+    {
+        String url = "";
+        try {
+            url = jsonObject.getString("image");
+        }
+        catch(Exception e)
+        {
+            url = jsonObject.getJSONArray("image").getString(0);
+        }
+
+        return url;
+    }
 
 }

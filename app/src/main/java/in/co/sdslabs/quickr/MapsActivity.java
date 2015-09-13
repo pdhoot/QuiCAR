@@ -202,25 +202,30 @@ public class MapsActivity extends FragmentActivity{
                 populateTable(marker);
                 Log.d("Latitude", Double.toString(marker.getPosition().latitude));
                 Log.d("Longitude", Double.toString(marker.getPosition().longitude));
-                AdsCollection
-                ImageRequest request = new ImageRequest(url,
-                        new Response.Listener<Bitmap>() {
-                            @Override
-                            public void onResponse(Bitmap bitmap) {
-                                ImageView mImageView;
-                                mImageView = (ImageView) findViewById(R.id.imageView);
-                                mImageView.setImageBitmap(bitmap);
-                            }
-                        }, 0, 0, null,
-                        new Response.ErrorListener() {
-                            public void onErrorResponse(VolleyError error) {
+                try {
+                    Ads ad = collection.get(marker);
+                    url = ad.getImageUrl();
+                    ImageRequest request = new ImageRequest(url,
+                            new Response.Listener<Bitmap>() {
+                                @Override
+                                public void onResponse(Bitmap bitmap) {
+                                    ImageView mImageView;
+                                    mImageView = (ImageView) findViewById(R.id.imageView);
+                                    mImageView.setImageBitmap(bitmap);
+                                }
+                            }, 0, 0, null,
+                            new Response.ErrorListener() {
+                                public void onErrorResponse(VolleyError error) {
 
-                            }
-                        });
-// Access the RequestQueue through your singleton class.
-                VolleySingleton vol = VolleySingleton.getInstance()
-                RequestQueue requestQue = vol.getRequestQueue();
-                requestQue.add(request);
+                                }
+                            });
+                    // Access the RequestQueue through your singleton class.
+                    VolleySingleton vol = VolleySingleton.getInstance();
+                    RequestQueue requestQue = vol.getRequestQueue();
+                    requestQue.add(request);
+                }
+                catch(Exception e){System.out.println("error");}
+
                 return true;
             }
 
@@ -234,7 +239,8 @@ public class MapsActivity extends FragmentActivity{
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        AdsCollection collection = new AdsCollection();
+                        AdsCollection adc = new AdsCollection();
+                        collection = adc.getMarkerAdMapping();
 
                         Log.d("JSON Response", response.toString());
 
@@ -255,11 +261,11 @@ public class MapsActivity extends FragmentActivity{
 
                                 Log.d("Lat", Double.toString(lat));
 
-                                collection.addMappedItem(offsetItem, ad);
+                                collection.put(offsetItem, ad);
                             }
 
                             if(mClusterManager!=null) {
-                                Map<MyItem , Ads> m = collection.getMarkerAdMapping();
+                                Map<MyItem , Ads> m = collection;
 
                                 Log.d("Collection Size", Integer.toString(m.size()));
 
