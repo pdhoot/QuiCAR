@@ -2,6 +2,7 @@ try:
 	import simplejson as json
 except:
 	import json
+import random
 
 import requests
 from ConfigParser import ConfigParser
@@ -27,6 +28,14 @@ while condition:
 
 	for i in result['AdsByCategoryResponse']['AdsByCategoryData']['docs']:
 		if i['id'] not in ads:
+			if 'geo_pin' in i:
+				cord = i['geo_pin'].split(',')
+				lat = float(cord[0])
+				lng = float(cord[1])
+				lat+=(random.random()-0.5)/100
+				lng+=(random.random()-0.5)/100
+				geo_pin = "" + `lat` + ', ' + `lng`
+				i['geo_pin'] = geo_pin 
 			array.append(i)
 			ads.append(i['id'])
 		else:
