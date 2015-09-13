@@ -63,11 +63,7 @@ public class MapsActivity extends FragmentActivity {
                 "Honda", "Hyundai", "ICML", "Isuzu", "Jaguar", "Koenigsegg", "Lamborghini", "Land Rover", "Mahindra", "Maruti Suzuki",
                 "Maserati", "Mercedes Benz", "Mini", "Mitsubishi", "Nissan", "Opel", "Others","Porsche", "Premier",
                 "Renault", "Rolls Royce", "San Motors", "Skoda", "Tata", "Toyota", "Volkswagen", "Volvo" };
-//        Log.d("response" , x.toString());
-//        "Brand_name":
-//        ,
-//        "Model":
-       String model_name[] =  { "7", "1 Series", "3 Door", "3 Series", "370Z", "458 Italia", "458 Speciale", "458 Spider", "5 Door",
+        String model_name[] =  { "7", "1 Series", "3 Door", "3 Series", "370Z", "458 Italia", "458 Speciale", "458 Spider", "5 Door",
                "5 Series", "599 GTB Fiorano", "6 Series", "7 Series", "911 Convertible", "911 Coupe", "A Class", "A Star", "A3",
                "A3 cabriolet", "A4", "A6", "A7", "A8", "A8 L", "Accent", "Accord", "Agera", "Altis", "Alto", "Alto 800", "Alto K10",
                "Amaze", "Ambassador", "Aria", "Armada", "Arnage", "Astra", "Avanti", "Aventador Convertible", "Aventador Coupe", "Aveo",
@@ -233,7 +229,7 @@ public class MapsActivity extends FragmentActivity {
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                onLocationChanged(location);
+                onLocationsChanged(location);
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -249,7 +245,7 @@ public class MapsActivity extends FragmentActivity {
 
         Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
         if(lastKnownLocation != null) {
-            onLocationChanged(lastKnownLocation);
+            onLocationsChanged(lastKnownLocation);
         }
 
         Log.d("Location", "Unable");
@@ -259,7 +255,7 @@ public class MapsActivity extends FragmentActivity {
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-18.142, 178.431), 2));
     }
 
-    private void onLocationChanged(Location location) {
+    private void onLocationsChanged(Location location) {
         if(!mapCameraMovedForCurrentLocation) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
