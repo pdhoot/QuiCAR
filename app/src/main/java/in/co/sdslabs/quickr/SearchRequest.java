@@ -13,13 +13,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Created by arpit on 12/9/15.
  */
 public class SearchRequest {
     private SearchResponse.Listener<AdsCollection> listener;
 
-    public SearchRequest(SearchBox search, SearchResponse.Listener<AdsCollection> listener) {
+    public SearchRequest(final SearchBox search, SearchResponse.Listener<AdsCollection> listener) {
         this.listener = listener;
 
         search.setSearchListener(new SearchBox.SearchListener() {
@@ -47,17 +50,26 @@ public class SearchRequest {
                 {
                     if(searchTerm.toLowerCase().equals(SearchItems.brand_name[i].toLowerCase()))
                     {
-                        url = "http://vps.rkravi.com:8000/getAds?brand_name=" + searchTerm;
+                        try{
+                            url = "http://vps.rkravi.com:8000/getAds?brand_name=" + URLEncoder.encode(searchTerm, "UTF-8");
+                        } catch (UnsupportedEncodingException exp) {
+                            Log.d("Exception", exp.getMessage());
+                        }
                         break;
                     }
                 }
-                if(!url.equals(""))
+                if(url.equals(""))
                 {
                     for(int i = 0 ;i<SearchItems.model_name.length ; i++)
                     {
+                        Log.d("Checking", SearchItems.model_name[i]);
                         if(searchTerm.toLowerCase().equals(SearchItems.model_name[i].toLowerCase()))
                         {
-                            url = "http://vps.rkravi.com:8000/getAds?model=" + searchTerm;
+                            try{
+                                url = "http://vps.rkravi.com:8000/getAds?model=" + URLEncoder.encode(searchTerm, "UTF-8");
+                            } catch (UnsupportedEncodingException exp) {
+                                Log.d("Exception", exp.getMessage());
+                            }
                             break;
                         }
                     }

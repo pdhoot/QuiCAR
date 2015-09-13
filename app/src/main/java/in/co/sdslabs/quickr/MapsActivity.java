@@ -79,6 +79,8 @@ public class MapsActivity extends FragmentActivity{
                             {
                                 mClusterManager.addItem(entry.getKey());
                             }
+
+                            mMap.animateCamera(CameraUpdateFactory.zoomTo(mMap.getCameraPosition().zoom - 1), 2000, null);
                         }
 
                     }
@@ -243,6 +245,8 @@ public class MapsActivity extends FragmentActivity{
                                 {
                                     mClusterManager.addItem(entry.getKey());
                                 }
+
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(mMap.getCameraPosition().zoom - 1), 2000, null);
                             }
                         }
                         catch(JSONException e) {}
