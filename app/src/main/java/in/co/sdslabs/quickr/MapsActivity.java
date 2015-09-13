@@ -128,9 +128,6 @@ public class MapsActivity extends FragmentActivity{
     }
 
     private void setUpClustering() {
-        // Position the map.
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0, 0), 10));
-
         // Initialize the manager with the context and the map.
         // (Activity extends context, so we can pass 'this' in the constructor.)
         mClusterManager = new ClusterManager<MyItem>(this, mMap);
@@ -306,7 +303,7 @@ public class MapsActivity extends FragmentActivity{
             mMap.addMarker(new MarkerOptions().position(latLng));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 6));
 
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
 
             mapCameraMovedForCurrentLocation = !mapCameraMovedForCurrentLocation;
         }
