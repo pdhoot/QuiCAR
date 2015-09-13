@@ -57,6 +57,7 @@ public class MapsActivity extends FragmentActivity{
         setContentView(R.layout.activity_maps);
 
         search = (SearchBox) findViewById(R.id.searchbox);
+        search.setLogoText("Search");
 
         SearchRequest searchRequest = new SearchRequest(search,
                 new SearchResponse.Listener<AdsCollection>() {
@@ -66,6 +67,10 @@ public class MapsActivity extends FragmentActivity{
                             Map<MyItem , Ads> m = ads.getMarkerAdMapping();
 
                             Log.d("Collection Size", Integer.toString(m.size()));
+
+                            // clear all existing markers
+                            mClusterManager.clearItems();
+
                             for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
                             {
                                 mClusterManager.addItem(entry.getKey());
@@ -225,6 +230,10 @@ public class MapsActivity extends FragmentActivity{
                                 Map<MyItem , Ads> m = collection.getMarkerAdMapping();
 
                                 Log.d("Collection Size", Integer.toString(m.size()));
+
+                                // clear all existing markers
+                                mClusterManager.clearItems();
+
                                 for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
                                 {
                                     mClusterManager.addItem(entry.getKey());
