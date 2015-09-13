@@ -39,6 +39,8 @@ import org.json.*;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MapsActivity extends FragmentActivity{
 
@@ -143,8 +145,25 @@ public class MapsActivity extends FragmentActivity{
 
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
+                int markerCount = cluster.getSize();
+
+                Random rand = new Random();
+
+                int randomMarkerIndex = rand.nextInt(markerCount);
+
+                Log.d("Random Marker", Integer.toString(randomMarkerIndex));
+
+                int index = 0;
+
                 for (MyItem markerItem : cluster.getItems()) {
+
+                    if(index == randomMarkerIndex) {
+                        // TODO: uncomment this @nightfury
+                        //populateTable(markerItem);
+                    }
+
                     builder.include(markerItem.getPosition());
+                    index++;
                 }
 
                 LatLngBounds bounds = builder.build();
