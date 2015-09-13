@@ -50,4 +50,20 @@ public class Ads {
         return jsonObject.getString("attribute_Fuel_Type");
     }
 
+    public double getLatitude() throws JSONException
+    {
+        String latlon = jsonObject.getString("geo_pin");
+        String coords[] = latlon.split(",");
+        double lat = Double.parseDouble(coords[0]);
+        return lat;
+    }
+
+    public double getLongitude() throws JSONException
+    {
+        String latlon = jsonObject.getString("geo_pin");
+        String coords[] = latlon.split(",");
+        double lon = Double.parseDouble(coords[1]);
+        return lon;
+    }
+
 }

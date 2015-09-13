@@ -5,10 +5,10 @@ import java.util.*;
  * Created by pdh1596 on 13/9/15.
  */
 public class AdsCollection {
-    public List<Ads> adList;
+    public Map<MyItem , Ads > adMap;
 
     public AdsCollection() {
-        adList = new ArrayList<Ads>();
+        adMap = new HashMap<MyItem , Ads>();
     }
 
 }

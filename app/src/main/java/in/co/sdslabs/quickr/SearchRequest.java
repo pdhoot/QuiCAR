@@ -9,6 +9,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.quinny898.library.persistentsearch.SearchBox;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -37,7 +39,8 @@ public class SearchRequest {
             @Override
             public void onSearch(String searchTerm) {
                 //Call sendGETRequest with url and the search term
-
+                String url = "vps.rkravi.com:8000/getAds?model=" + searchTerm;
+                sendGETRequest(url);
                 Log.d("onsearch", "yeah");
 
             }
@@ -66,6 +69,19 @@ public class SearchRequest {
                     @Override
                     public void onResponse(JSONObject response) {
                         //perform the result
+                        AdsCollection collection = new AdsCollection();
+                        try {
+                            JSONArray ads = response.getJSONArray("ads");
+                            for (int i = 0; i < ads.length(); i++) {
+                                Ads ad = new Ads(ads.getJSONObject(i));
+                                double lat = ad.getLatitude();
+                                double lng = ad.getLongitude();
+                                MyItem offsetItem = new MyItem(lat, lng);
+                                //mclusetermanager.additem(offsetitem) to be implemented
+                                collection.adMap.put(offsetItem , ad);
+                            }
+                        }
+                        catch(JSONException e) {}
                     }
                 }, new Response.ErrorListener() {
             @Override
