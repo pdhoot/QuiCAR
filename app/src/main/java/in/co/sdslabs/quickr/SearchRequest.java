@@ -69,7 +69,6 @@ public class SearchRequest {
                     @Override
                     public void onResponse(JSONObject response) {
                         //perform the result
-                        AdsCollection collection = new AdsCollection();
                         try {
                             JSONArray ads = response.getJSONArray("ads");
                             for (int i = 0; i < ads.length(); i++) {
@@ -78,7 +77,7 @@ public class SearchRequest {
                                 double lng = ad.getLongitude();
                                 MyItem offsetItem = new MyItem(lat, lng);
                                 //mclusetermanager.additem(offsetitem) to be implemented
-                                collection.adMap.put(offsetItem , ad);
+                                AdsCollection.adMap.put(offsetItem , ad);
                             }
                         }
                         catch(JSONException e) {}

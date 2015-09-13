@@ -5,7 +5,7 @@ import java.util.*;
  * Created by pdh1596 on 13/9/15.
  */
 public class AdsCollection {
-    public Map<MyItem , Ads > adMap;
+    public static Map<MyItem, Ads> adMap;
 
     public AdsCollection() {
         adMap = new HashMap<MyItem , Ads>();

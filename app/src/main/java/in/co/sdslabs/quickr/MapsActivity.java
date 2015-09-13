@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
@@ -38,7 +39,7 @@ import org.json.*;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private SearchBox search;
@@ -275,6 +276,19 @@ public class MapsActivity extends FragmentActivity {
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
             mapCameraMovedForCurrentLocation = !mapCameraMovedForCurrentLocation;
+        }
+    }
+
+    private void findAllInRadius(Location location)
+    {
+        Location center = location;
+        for (MyItem myItem : AdsCollection.adMap.keySet()) {
+            LatLng target = myItem.getPosition() ;
+            Location loc2 = new Location(LocationManager.GPS_PROVIDER);
+            loc2.setLatitude(target.latitude);
+            loc2.setLongitude(target.longitude);
+            Float distance = center.distanceTo(loc2);
+            Log.d("pdhoot", distance.toString());
         }
     }
 
