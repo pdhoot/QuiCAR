@@ -6,3 +6,6 @@
 /build
 /captures
 app/src/main/res/values/secret_utils.xml
+.idea
+QuiCAR.iml
+app/app.iml

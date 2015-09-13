@@ -33,7 +33,7 @@ import com.google.maps.android.clustering.*;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.quinny898.library.persistentsearch.SearchBox;
 
-import org.json.JSONObject;
+import org.json.*;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -62,6 +62,14 @@ public class MapsActivity extends FragmentActivity {
 //        ArrayList<SearchResult> searchables = new ArrayList<>();
 //        searchables.add(searchable);
 //        search.setSearchables(searchables);
+        AdsCollection collection = new AdsCollection();
+        JSONObject obj = new JSONObject(response);
+        JSONArray ads = obj.getJSONArray("ads");
+        for(int i = 0 ; i<ads.length() ; i++)
+        {
+            Ads ad = new Ads(ads.getJSONObject(i));
+            collection.adList.add(ad);
+        }
 
     }
 
