@@ -356,6 +356,7 @@ public class MapsActivity extends FragmentActivity{
         TextView yearTextView = (TextView) findViewById(R.id.year);
         TextView priceTextView = (TextView) findViewById(R.id.price);
         TableLayout details = (TableLayout) findViewById(R.id.details);
+        details.removeAllViews();
         details.setStretchAllColumns(true);
         details.bringToFront();
 
