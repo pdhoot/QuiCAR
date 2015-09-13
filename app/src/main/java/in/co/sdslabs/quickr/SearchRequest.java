@@ -100,11 +100,19 @@ public class SearchRequest {
                         //perform the result
                         try {
                             JSONArray ads = response.getJSONArray("ads");
+                            Log.d("Ads count", Integer.toString(ads.length()));
                             for (int i = 0; i < ads.length(); i++) {
                                 Ads ad = new Ads(ads.getJSONObject(i));
+
+                                if(!ad.hasGeoCoord()) {
+                                    continue;
+                                }
+
                                 double lat = ad.getLatitude();
                                 double lng = ad.getLongitude();
                                 MyItem offsetItem = new MyItem(lat, lng);
+
+                                Log.d("Lat", Double.toString(lat));
 
                                 collection.addMappedItem(offsetItem, ad);
                             }

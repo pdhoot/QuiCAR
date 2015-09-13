@@ -61,6 +61,8 @@ public class MapsActivity extends FragmentActivity{
                     public void onResponse(AdsCollection ads) {
                         if(mClusterManager!=null) {
                             Map<MyItem , Ads> m = ads.getMarkerAdMapping();
+
+                            Log.d("Collection Size", Integer.toString(m.size()));
                             for(Map.Entry<MyItem , Ads> entry : m.entrySet() )
                             {
                                 mClusterManager.addItem(entry.getKey());
@@ -140,7 +142,7 @@ public class MapsActivity extends FragmentActivity{
 
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-                for (MyItem markerItem: cluster.getItems()) {
+                for (MyItem markerItem : cluster.getItems()) {
                     builder.include(markerItem.getPosition());
                 }
 

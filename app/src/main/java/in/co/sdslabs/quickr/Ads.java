@@ -66,4 +66,14 @@ public class Ads {
         return lon;
     }
 
+    public boolean hasGeoCoord()
+    {
+        try {
+            jsonObject.getString("geo_pin");
+            return true;
+        } catch (JSONException ex) {
+            return false;
+        }
+    }
+
 }
