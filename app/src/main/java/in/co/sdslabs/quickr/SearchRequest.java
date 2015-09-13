@@ -55,7 +55,7 @@ public class SearchRequest {
                 {
                     for(int i = 0 ;i<SearchItems.model_name.length ; i++)
                     {
-                        if(searchTerm.toLowerCase().equals(SearchItems.brand_name[i].toLowerCase()))
+                        if(searchTerm.toLowerCase().equals(SearchItems.model_name[i].toLowerCase()))
                         {
                             url = "http://vps.rkravi.com:8000/getAds?model=" + searchTerm;
                             break;
@@ -87,11 +87,15 @@ public class SearchRequest {
     private void sendGETRequest(String url) {
         RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
 
+        Log.d("Request URL", url);
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         AdsCollection collection = new AdsCollection();
+
+                        Log.d("JSON Response", response.toString());
 
                         //perform the result
                         try {
@@ -102,10 +106,10 @@ public class SearchRequest {
                                 double lng = ad.getLongitude();
                                 MyItem offsetItem = new MyItem(lat, lng);
 
-                                collection.addMappedItem(offsetItem , ad);
-
-                                listener.onResponse(collection);
+                                collection.addMappedItem(offsetItem, ad);
                             }
+
+                            listener.onResponse(collection);
                         }
                         catch(JSONException e) {}
                     }
