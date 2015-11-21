@@ -1,4 +1,4 @@
-ap## QuiCAR
+## QuiCAR
 
 > Android App combining the power of Quikr API and Google Maps API. Displays sellers geographically on a google map nearby. Users can search for a product.
 
